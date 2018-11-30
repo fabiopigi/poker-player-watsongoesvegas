@@ -95,7 +95,7 @@ class Player {
           //The River
           } else if (gameState.community_cards.length === 5)     {
             // console.log(rank);
-            if (rank > 1) {
+            if (rank > 2) {
               betValue = betValue + gameState.minimum_raise + 1;
             } else if (rank === 0) {
               betValue = 0;
