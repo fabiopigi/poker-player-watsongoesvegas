@@ -74,17 +74,18 @@ class Player {
 
           //Flop
           if (gameState.community_cards.length === 3)     {
-            // console.log(rank);
-            if (rank > 1) {
+            if (rank === 1) {
+              betValue = betValue + gameState.minimum_raise;
+            } else if (rank > 1) {
               betValue = betValue + gameState.minimum_raise + 1;
-            } else if (rank === 0) {
+            }
+            else if (rank === 0) {
               betValue = 0;
             }
 
 
           // The Turn
           } else if (gameState.community_cards.length === 4)     {
-            // console.log(rank);
             if (rank > 1) {
               betValue = betValue + gameState.minimum_raise + 1;
             } else if (rank === 0) {
@@ -94,7 +95,6 @@ class Player {
 
           //The River
           } else if (gameState.community_cards.length === 5)     {
-            // console.log(rank);
             if (rank > 2) {
               betValue = betValue + gameState.minimum_raise + 1;
             } else if (rank === 0) {
