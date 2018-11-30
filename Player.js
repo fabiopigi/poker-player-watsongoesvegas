@@ -45,14 +45,27 @@ class Player {
       this.consecutive(cards[0], cards[1]);
   }
 
+  static raise(raiseValue = 1) {
+    return (this.betValue + this.gameState.minimum_raise + raiseValue);
+  }
+
+  static call() {
+    return this.betValue;
+  }
+
+  static fold() {
+    return 0;
+  }
+
+
 
   // GETS CALLED
   static betRequest(gameState, bet) {
 
     const cards = gameState.community_cards.concat(gameState.players[gameState.in_action].hole_cards);
-    let betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'];
-
-
+    this.gameState = gameState;
+    this.betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'];;
+    let betValue = 0;
     // console.log(gameState);
 
     //Check initial cards on hand before comm flipped
@@ -75,36 +88,36 @@ class Player {
           //Flop
           if (gameState.community_cards.length === 3)     {
             if (rank === 1) {
-              betValue = betValue + gameState.minimum_raise;
+              betValue = this.call();
             } else if (rank > 1) {
-              betValue = betValue + gameState.minimum_raise + 1;
+              betValue = this.raise(1);
             }
             else if (rank === 0) {
-              betValue = 0;
+              betValue = fold();
             }
 
 
           // The Turn
           } else if (gameState.community_cards.length === 4)     {
             if (rank === 1) {
-              betValue = betValue + gameState.minimum_raise;
+              betValue = this.call();
             } else if (rank > 1) {
-              betValue = betValue + gameState.minimum_raise + 1;
+              betValue = this.raise(1);
             }
             else if (rank === 0) {
-              betValue = 0;
+              betValue = fold();
             }
 
 
           //The River
           } else if (gameState.community_cards.length === 5)     {
             if (rank === 1) {
-              betValue = betValue + gameState.minimum_raise;
+              betValue = this.call();
             } else if (rank > 1) {
-              betValue = betValue + gameState.minimum_raise + 1;
+              betValue = this.raise(1);
             }
             else if (rank === 0) {
-              betValue = 0;
+              betValue = fold();
             }
 
           }
