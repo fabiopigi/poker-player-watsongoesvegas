@@ -71,12 +71,44 @@ class Player {
         .then(json => {
           let rank = json.rank;
 
-          // console.log(rank);
-          if (rank > 1) {
-            betValue = betValue + gameState.minimum_raise + 1;
-          } else if (rank === 0) {
-            betValue = 0;
+
+          //Flop
+          if (gameState.community_cards.length === 3)     {
+            // console.log(rank);
+            if (rank > 1) {
+              betValue = betValue + gameState.minimum_raise + 1;
+            } else if (rank === 0) {
+              betValue = 0;
+            }
+
+
+          // The Turn
+          } else if (gameState.community_cards.length === 4)     {
+            // console.log(rank);
+            if (rank > 1) {
+              betValue = betValue + gameState.minimum_raise + 1;
+            } else if (rank === 0) {
+              betValue = 0;
+            }
+
+
+          //The River
+          } else if (gameState.community_cards.length === 5)     {
+            // console.log(rank);
+            if (rank > 1) {
+              betValue = betValue + gameState.minimum_raise + 1;
+            } else if (rank === 0) {
+              betValue = 0;
+            }
+
           }
+
+
+
+
+
+
+
 
           bet(betValue);
         })
