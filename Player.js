@@ -19,11 +19,13 @@ class Player {
       .then(json => {
         console.log(json);
 
-        let betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet']
+        let betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'];
 
         let rank = json.rank;
         if(rank > 1 ) {
           betValue = betValue + gameState.minimum_raise + 1;
+        } else if (rank == 0) {
+          betValue = 0;
         }
 
         bet(betValue);
