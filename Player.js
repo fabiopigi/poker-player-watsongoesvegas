@@ -6,7 +6,6 @@ class Player {
   }
 
 
-
   static sameColor(card1, card2) {
     return card1.suit === card2.suit;
   }
@@ -31,15 +30,13 @@ class Player {
   }
 
 
-
-
   // GETS CALLED
   static betRequest(gameState, bet) {
 
     const rankingUrl = "http://rainman.leanpoker.org/rank";
     const cards = gameState.community_cards.concat(gameState.players[gameState.in_action].hole_cards);
 
-    let fetchRequest = fetch(rankingUrl, { method: 'GET', body: cards })
+    let fetchRequest = fetch(rankingUrl, {method: 'GET', body: cards})
       .then(res => res.json())
       .then(json => {
         console.log(json);
@@ -47,15 +44,18 @@ class Player {
         let betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'];
         let rank = json.rank;
 
-        if(rank > 1 ) {
+        if (rank > 1) {
           betValue = betValue + gameState.minimum_raise + 1;
-        } else if (rank == 0) {
+        } else if (gameState.community_cards.length === 0 && this.hasGoodStart(cards)) {
+          // we already call
+
+        } else if (rank === 0) {
           betValue = 0;
         }
 
         bet(betValue);
       })
-      .catch(err => console.error(err));;
+      .catch(err => console.error(err));
 
 
   }

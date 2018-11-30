@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/', (req, res) => {
   const { action, game_state } = req.body;
 
+  console.log("action", action);
   switch (action) {
     case 'version':
       res.send(Player.VERSION);
@@ -35,5 +36,5 @@ app.post('/', (req, res) => {
 
 const server = http.createServer(app);
 server.listen(port, () => {
-  console.log(`Server listening at: localhost:${port}`);
+  console.log(`Server listening at(1): localhost:${port}`);
 });
