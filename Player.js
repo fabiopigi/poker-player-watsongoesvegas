@@ -46,7 +46,7 @@ class Player {
   }
 
   static allIn() {
-    return (this.betValue + this.gameState.minimum_raise + gameState.players[gameState.in_action].stack - 10);
+    return (this.betValue + this.gameState.minimum_raise + this.gameState.players[this.gameState.in_action].stack - 10);
   }
 
   static raise(raiseValue = 1) {
@@ -61,6 +61,10 @@ class Player {
     return 0;
   }
 
+
+  static getMe() {
+    return this.gameState.players[this.gameState.in_action];
+  }
 
 
   // GETS CALLED
