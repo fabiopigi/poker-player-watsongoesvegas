@@ -53,6 +53,8 @@ class Player {
     let betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'];
 
 
+    // console.log(gameState);
+
     //Check initial cards on hand before comm flipped
     if (gameState.community_cards.length === 0) {
       if (this.hasGoodStart(cards)) {
@@ -64,7 +66,8 @@ class Player {
       bet(0);
       // community cards are available, we check API
       const rankingUrl = "http://rainman.leanpoker.org/rank";
-      let fetchRequest = fetch(rankingUrl, {method: 'GET', body: cards})
+      console.log(cards);
+      let fetchRequest = fetch(rankingUrl, {method: 'GET', headers: {cards: JSON.stringify(cards)}})
         .then(res => res.json())
         .then(json => {
           console.log(json);
