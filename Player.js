@@ -45,6 +45,10 @@ class Player {
       this.consecutive(cards[0], cards[1]);
   }
 
+  static allIn() {
+    return (this.betValue + this.gameState.minimum_raise + gameState.players[gameState.in_action].stack - 10);
+  }
+
   static raise(raiseValue = 1) {
     return (this.betValue + this.gameState.minimum_raise + raiseValue);
   }
@@ -66,7 +70,6 @@ class Player {
     this.gameState = gameState;
     this.betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'];
     let betValue = 0;
-    // console.log(gameState);
 
     //Check initial cards on hand before comm flipped
     if (gameState.community_cards.length === 0) {
@@ -83,7 +86,6 @@ class Player {
         .then(response => response.json())
         .then(json => {
           let rank = json.rank;
-
 
           //Flop
           if (gameState.community_cards.length === 3)     {
@@ -126,7 +128,9 @@ class Player {
 
 
 
-
+          if(rank >= 7) {
+            betValue = this.allIn();
+          }
 
 
           bet(betValue);
