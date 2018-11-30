@@ -25,38 +25,62 @@ class Player {
     }
   }
 
+  static hasMultiple(cards, times) {
+    var i;
+    for (i = 0; i < cards.length; i++) {
+      if(cards.filter(card => card.rank === cards[i].rank).length >= times){
+        return true;
+      }
+    }
+    return false;
+  }
+
   static hasGoodStart(cards) {
-    return hasMultiple(cards, 2) || hasCard(cards, 'A') || hasCard(cards, 'K') || hasCard(cards, 'Q') || sameColor(cards[0], cards[1]) || consecutive(cards[0], cards[1]);
+
+    return this.hasMultiple(cards, 2) ||
+      this.hasCard(cards, 'A') ||
+      this.hasCard(cards, 'K') ||
+      this.hasCard(cards, 'Q') ||
+      this.sameColor(cards[0], cards[1]) ||
+      this.consecutive(cards[0], cards[1]);
   }
 
 
   // GETS CALLED
   static betRequest(gameState, bet) {
 
-    const rankingUrl = "http://rainman.leanpoker.org/rank";
     const cards = gameState.community_cards.concat(gameState.players[gameState.in_action].hole_cards);
+    let betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'];
 
-    let fetchRequest = fetch(rankingUrl, {method: 'GET', body: cards})
-      .then(res => res.json())
-      .then(json => {
-        console.log(json);
 
-        let betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'];
-        let rank = json.rank;
-
-        if (rank > 1) {
-          betValue = betValue + gameState.minimum_raise + 1;
-        } else if (gameState.community_cards.length === 0 && this.hasGoodStart(cards)) {
-          // we already call
-
-        } else if (rank === 0) {
-          betValue = 0;
-        }
-
+    //Check initial cards on hand before comm flipped
+    if (gameState.community_cards.length === 0) {
+      if (this.hasGoodStart(cards)) {
         bet(betValue);
-      })
-      .catch(err => console.error(err));
+      } else {
+        bet(0);
+      }
+    } else {
+      // community cards are available, we check API
+      const rankingUrl = "http://rainman.leanpoker.org/rank";
+      let fetchRequest = fetch(rankingUrl, {method: 'GET', body: cards})
+        .then(res => res.json())
+        .then(json => {
+          console.log(json);
 
+
+          let rank = json.rank;
+
+          if (rank > 1) {
+            betValue = betValue + gameState.minimum_raise + 1;
+          } else if (rank === 0) {
+            betValue = 0;
+          }
+
+          bet(betValue);
+        })
+        .catch(err => console.error(err));
+    }
 
   }
 
