@@ -4,7 +4,8 @@ class Player {
   }
 
   static betRequest(gameState, bet) {
-    bet(0);
+    var betValue = gameState.current_buy_in - gameState.players[gameState.in_action]['bet'] + gameState.minimum_raise + 1;
+    bet(betValue);
   }
 
   static showdown(gameState) {
