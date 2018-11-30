@@ -12,7 +12,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/', (req, res) => {
   const { action, game_state } = req.body;
 
-  console.log("action", action);
   switch (action) {
     case 'version':
       res.send(Player.VERSION);

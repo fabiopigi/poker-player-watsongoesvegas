@@ -63,18 +63,15 @@ class Player {
         bet(0);
       }
     } else {
-      bet(0);
       // community cards are available, we check API
-      const rankingUrl = "http://rainman.leanpoker.org/rank";
-      console.log(cards);
-      let fetchRequest = fetch(rankingUrl, {method: 'GET', headers: {cards: JSON.stringify(cards)}})
-        .then(res => res.json())
+      const rankingUrl = "http://rainman.leanpoker.org/rank" + "?cards="+encodeURI(JSON.stringify(cards));
+      // console.log(rankingUrl);
+      let fetchRequest = fetch(rankingUrl , {method: 'GET'})
+        .then(response => response.json())
         .then(json => {
-          console.log(json);
-
-
           let rank = json.rank;
 
+          // console.log(rank);
           if (rank > 1) {
             betValue = betValue + gameState.minimum_raise + 1;
           } else if (rank === 0) {
