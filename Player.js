@@ -61,6 +61,7 @@ class Player {
         bet(0);
       }
     } else {
+      bet(0);
       // community cards are available, we check API
       const rankingUrl = "http://rainman.leanpoker.org/rank";
       let fetchRequest = fetch(rankingUrl, {method: 'GET', body: cards})
